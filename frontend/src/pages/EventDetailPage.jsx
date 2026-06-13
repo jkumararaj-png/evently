@@ -152,7 +152,7 @@ export default function EventDetailPage() {
                   placeholder="your@email.com"
                   required
                 />
-                <label>Phone number</label>
+                <label>Contact number</label>
                 <input
                   value={rsvpData.phone}
                   onChange={(e) =>

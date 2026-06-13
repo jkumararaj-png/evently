@@ -182,6 +182,10 @@ nav {
   text-decoration: none;
 }
 
+.navbar-links a.active {
+  color: var(--color-text);
+}
+
 .navbar-auth {
   display: flex;
   flex: 1;

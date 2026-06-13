@@ -1,8 +1,9 @@
-import { Link, useNavigate } from "react-router";
+import { NavLink, Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
+  const location = useLocation();
   const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [dark, setDark] = useState(
@@ -29,10 +30,24 @@ export default function Navbar() {
       </div>
 
       <div className="navbar-links">
-        <Link to="/events">Browse Events</Link>
-        {user && <Link to="/events/create">+ Create event</Link>}
-        {user && <Link to="/my-rsvps">My RSVPs</Link>}
-        {isAdmin && <Link to="/admin">Dashboard</Link>}
+        <NavLink
+          to="/events"
+          className={() =>
+            location.pathname.startsWith("/events") &&
+            !location.pathname.includes("create")
+              ? "active"
+              : ""
+          }
+        >
+          Browse Events
+        </NavLink>
+        {user && (
+          <NavLink to="/events/create" end>
+            + Create event
+          </NavLink>
+        )}
+        {user && <NavLink to="/my-rsvps">My RSVPs</NavLink>}
+        {isAdmin && <NavLink to="/admin">Dashboard</NavLink>}
       </div>
 
       <div className="navbar-auth">

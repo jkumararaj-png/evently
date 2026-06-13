@@ -63,7 +63,7 @@ export default function MyRSVPsPage() {
                 onChange={(e) =>
                   setEditData({ ...editData, phone: e.target.value })
                 }
-                placeholder="Phone number"
+                placeholder="+60 12 345 6789"
               />
 
               <label style={{ marginTop: 15 }} htmlFor="notes">
@@ -75,7 +75,7 @@ export default function MyRSVPsPage() {
                 onChange={(e) =>
                   setEditData({ ...editData, notes: e.target.value })
                 }
-                placeholder="Notes"
+                placeholder="Any dietary requirements, questions, etc."
               />
               <div className="row-actions" style={{ marginTop: 8 }}>
                 <button onClick={() => handleEdit(rsvp._id)}>Save</button>
@@ -88,7 +88,7 @@ export default function MyRSVPsPage() {
             <>
               <div>
                 <p style={{ fontWeight: 600, color: "var(--color-text)" }}>
-                  {rsvp.event?.title || "Event unavailable"}
+                  {rsvp.event?.title || "Event unavailable (deleted/removed)"}
                 </p>
                 <p>
                   {rsvp.event?.city} — {rsvp.event?.category}
