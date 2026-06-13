@@ -39,4 +39,23 @@ router.post("/", protect, async (req, res) => {
   }
 });
 
+router.put("/:id", protect, async (req, res) => {
+  try {
+    const rsvp = await RSVP.findById(req.params.id);
+    if (!rsvp) return res.status(404).json({ message: "RSVP not found" });
+
+    // only the rsvp owner can edit it
+    if (rsvp.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    const updated = await RSVP.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 module.exports = router;
