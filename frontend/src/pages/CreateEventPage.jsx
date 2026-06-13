@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
+import MDEditor from "@uiw/react-md-editor";
 import api from "../api/axios";
 
 const CATEGORIES = [
@@ -61,21 +62,11 @@ export default function CreateEventPage() {
         />
 
         <label>Description</label>
-        <textarea
+        <MDEditor
           value={form.description}
-          onChange={set("description")}
-          placeholder="What's the event about?"
-          required
+          onChange={(val) => setForm({ ...form, description: val || "" })}
+          height={300}
         />
-        <p
-          style={{
-            fontSize: "0.78rem",
-            color: "var(--color-text-muted)",
-            marginTop: 4,
-          }}
-        >
-          Supports markdown — **bold**, *italic*, [links](url), ![images](url)
-        </p>
 
         <label>Date & time</label>
         <input
@@ -116,7 +107,7 @@ export default function CreateEventPage() {
           onChange={set("eventImg")}
           placeholder="https://..."
         />
-        {form.image && (
+        {form.eventImg && (
           <img
             src={form.eventImg}
             alt="preview"

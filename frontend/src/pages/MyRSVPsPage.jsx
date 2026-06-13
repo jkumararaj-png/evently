@@ -118,7 +118,7 @@ export default function MyRSVPsPage() {
                       });
                     }}
                   >
-                    Edit
+                    Edit RSVP details
                   </button>
                 )}
               </div>

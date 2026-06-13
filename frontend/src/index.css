@@ -581,6 +581,20 @@ form > * + * {
   margin-bottom: 24px;
 }
 
+.w-md-editor .w-md-editor-text-textarea,
+.w-md-editor .w-md-editor-text {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+.w-md-editor textarea {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 10px !important;
+  line-height: 1.5 !important;
+  font-size: 14px !important;
+}
+
 .event-actions {
   display: flex;
   flex-direction: column;

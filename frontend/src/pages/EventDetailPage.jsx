@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
-import ReactMarkdown from "react-markdown";
+import MDEditor from "@uiw/react-md-editor";
 import api from "../api/axios";
 
 export default function EventDetailPage() {
@@ -109,7 +109,7 @@ export default function EventDetailPage() {
       </div>
 
       <div className="event-description">
-        <ReactMarkdown>{event.description}</ReactMarkdown>
+        <MDEditor.Markdown source={event.description} />
       </div>
 
       {/* RSVP section */}
@@ -176,26 +176,13 @@ export default function EventDetailPage() {
                       required
                     />
                     <label>Description</label>
-                    <textarea
+                    <MDEditor
                       value={editData.description}
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          description: e.target.value,
-                        })
+                      onChange={(val) =>
+                        setEditData({ ...editData, description: val || "" })
                       }
-                      required
+                      height={300}
                     />
-                    <p
-                      style={{
-                        fontSize: "0.78rem",
-                        color: "var(--color-text-muted)",
-                        marginTop: 4,
-                      }}
-                    >
-                      Supports markdown — **bold**, *italic*, [links](url),
-                      ![images](url)
-                    </p>
                     <label>Date & time</label>
                     <input
                       type="datetime-local"
