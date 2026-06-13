@@ -67,6 +67,15 @@ export default function CreateEventPage() {
           placeholder="What's the event about?"
           required
         />
+        <p
+          style={{
+            fontSize: "0.78rem",
+            color: "var(--color-text-muted)",
+            marginTop: 4,
+          }}
+        >
+          Supports markdown — **bold**, *italic*, [links](url), ![images](url)
+        </p>
 
         <label>Date & time</label>
         <input

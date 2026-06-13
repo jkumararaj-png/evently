@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
+import ReactMarkdown from "react-markdown";
 import api from "../api/axios";
 
 export default function EventDetailPage() {
@@ -94,7 +95,9 @@ export default function EventDetailPage() {
         )}
       </div>
 
-      <p className="event-description">{event.description}</p>
+      <div className="event-description">
+        <ReactMarkdown>{event.description}</ReactMarkdown>
+      </div>
 
       {/* RSVP section */}
       <div className="event-actions">
