@@ -11,7 +11,11 @@ export default function ManageUsersPage() {
     api
       .get("/api/users")
       .then((res) => {
-        setUsers(res.data);
+        const sorted = [
+          ...res.data.filter((u) => u._id === currentUser.id),
+          ...res.data.filter((u) => u._id !== currentUser.id),
+        ];
+        setUsers(sorted);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -47,7 +51,19 @@ export default function ManageUsersPage() {
       {users.map((u) => (
         <div key={u._id} className="data-row">
           <div>
-            <p>{u.name}</p>
+            <p>
+              {u.name}{" "}
+              {u._id === currentUser.id && (
+                <span
+                  style={{
+                    color: "var(--color-text-muted)",
+                    marginLeft: 3,
+                  }}
+                >
+                  (You)
+                </span>
+              )}
+            </p>
             <p>{u.email}</p>
             <span className={`role-badge ${u.role}`}>{u.role}</span>
           </div>
