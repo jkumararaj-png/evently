@@ -60,9 +60,9 @@ export default function MyRSVPsPage() {
               <input
                 type="tel"
                 pattern="[0-9+\s\-]*"
-                value={rsvpData.phone}
+                value={editData.phone}
                 onChange={(e) =>
-                  setRsvpData({ ...editData, phone: e.target.value })
+                  setEditData({ ...editData, phone: e.target.value })
                 }
                 placeholder="+60 12 345 6789"
               />
