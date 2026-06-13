@@ -62,10 +62,20 @@ router.put("/:id", protect, adminOnly, async (req, res) => {
   }
 });
 
-router.delete("/:id", protect, adminOnly, async (req, res) => {
+router.delete("/:id", protect, async (req, res) => {
   try {
-    const event = await Event.findByIdAndDelete(req.params.id, {});
+    const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: "Event not found" });
+
+    // allow if admin OR the organizer
+    if (
+      req.user.role !== "admin" &&
+      event.organizer.toString() !== req.user.id
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    await Event.findByIdAndDelete(req.params.id);
     res.json({ message: "Event deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });

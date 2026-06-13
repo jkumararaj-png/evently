@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router";
+import { useParams, useNavigate, Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 
 export default function EventDetailPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState(null);
@@ -115,6 +116,20 @@ export default function EventDetailPage() {
                 RSVP to this event
               </button>
             )}
+
+            {user && event.organizer && user.id === event.organizer._id && (
+              <button
+                className="danger"
+                onClick={async () => {
+                  if (!window.confirm("Delete this event?")) return;
+                  await api.delete(`/api/events/${id}`);
+                  navigate("/events");
+                }}
+              >
+                Delete event
+              </button>
+            )}
+
             {user && !alreadyRsvpd && !rsvpDone && showRsvpForm && (
               <form onSubmit={handleRSVP} className="rsvp-form">
                 <h2>RSVP Form</h2>
