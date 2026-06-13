@@ -51,7 +51,7 @@ export default function Navbar() {
               Hi,{" "}
               <Link
                 to={`/organizers/${user.id}`}
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{ textDecoration: "none" }}
               >
                 {user.name}
               </Link>
