@@ -32,7 +32,8 @@ export default function LandingPage() {
           <div className="step">
             <h3>3. Attendees RSVP and review</h3>
             <p>
-              Everything happens in one place — no redirects, no juggling forms.
+              Everything happens in one place, without redirects or juggling
+              forms.
             </p>
           </div>
         </div>
