@@ -50,13 +50,23 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", protect, adminOnly, async (req, res) => {
+router.put("/:id", protect, async (req, res) => {
   try {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: "Event not found" });
-    res.json(event);
+
+    if (
+      req.user.role !== "admin" &&
+      event.organizer.toString() !== req.user.id
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    const updated = await Event.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    }).populate("organizer", "name email"); // ← add this
+
+    res.json(updated);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

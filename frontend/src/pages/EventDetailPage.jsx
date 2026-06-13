@@ -23,6 +23,8 @@ export default function EventDetailPage() {
     notes: "",
   });
   const [rsvps, setRsvps] = useState([]);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
     Promise.all([
@@ -61,6 +63,17 @@ export default function EventDetailPage() {
       setAlreadyRsvpd(true);
     } catch (err) {
       setError(err.response?.data?.message || "RSVP failed");
+    }
+  };
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.put(`/api/events/${id}`, editData);
+      setEvent(res.data);
+      setShowEditForm(false);
+    } catch (err) {
+      alert("Failed to update event");
     }
   };
 
@@ -114,23 +127,154 @@ export default function EventDetailPage() {
               <p className="status-badge">✓ You're going!</p>
             )}
 
-            {user && !alreadyRsvpd && !rsvpDone && !showRsvpForm && (
-              <button onClick={() => setShowRsvpForm(true)}>
-                RSVP to this event
-              </button>
-            )}
-
             {user && event.organizer && user.id === event.organizer._id && (
-              <button
-                className="danger"
-                onClick={async () => {
-                  if (!window.confirm("Delete this event?")) return;
-                  await api.delete(`/api/events/${id}`);
-                  navigate("/events");
-                }}
-              >
-                Delete event
-              </button>
+              <>
+                <div className="row-actions">
+                  {user && !alreadyRsvpd && !rsvpDone && !showRsvpForm && (
+                    <button onClick={() => setShowRsvpForm(true)}>
+                      RSVP to this event
+                    </button>
+                  )}
+                  <button
+                    className="ghost"
+                    onClick={() => {
+                      setEditData({
+                        title: event.title,
+                        description: event.description,
+                        date: new Date(event.date).toISOString().slice(0, 16),
+                        venue: event.venue,
+                        city: event.city,
+                        category: event.category,
+                        eventImg: event.eventImg,
+                      });
+                      setShowEditForm(!showEditForm);
+                    }}
+                  >
+                    Edit event
+                  </button>
+                  <button
+                    className="danger"
+                    onClick={async () => {
+                      if (!window.confirm("Delete this event?")) return;
+                      await api.delete(`/api/events/${id}`);
+                      navigate("/");
+                    }}
+                  >
+                    Delete event
+                  </button>
+                </div>
+
+                {showEditForm && (
+                  <form onSubmit={handleEdit} className="rsvp-form">
+                    <h2>Edit Event</h2>
+                    <label>Title</label>
+                    <input
+                      value={editData.title}
+                      onChange={(e) =>
+                        setEditData({ ...editData, title: e.target.value })
+                      }
+                      required
+                    />
+                    <label>Description</label>
+                    <textarea
+                      value={editData.description}
+                      onChange={(e) =>
+                        setEditData({
+                          ...editData,
+                          description: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                    <p
+                      style={{
+                        fontSize: "0.78rem",
+                        color: "var(--color-text-muted)",
+                        marginTop: 4,
+                      }}
+                    >
+                      Supports markdown — **bold**, *italic*, [links](url),
+                      ![images](url)
+                    </p>
+                    <label>Date & time</label>
+                    <input
+                      type="datetime-local"
+                      value={editData.date}
+                      onChange={(e) =>
+                        setEditData({ ...editData, date: e.target.value })
+                      }
+                      required
+                    />
+                    <label>Venue</label>
+                    <input
+                      value={editData.venue}
+                      onChange={(e) =>
+                        setEditData({ ...editData, venue: e.target.value })
+                      }
+                      required
+                    />
+                    <label>City</label>
+                    <input
+                      value={editData.city}
+                      onChange={(e) =>
+                        setEditData({ ...editData, city: e.target.value })
+                      }
+                      required
+                    />
+                    <label>Category</label>
+                    <select
+                      value={editData.category}
+                      onChange={(e) =>
+                        setEditData({ ...editData, category: e.target.value })
+                      }
+                    >
+                      {[
+                        "Music",
+                        "Sports",
+                        "Competition",
+                        "Arts",
+                        "Food & Drink",
+                        "Community",
+                        "Other",
+                      ].map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <label>Image URL</label>
+                    <input
+                      value={editData.eventImg}
+                      onChange={(e) =>
+                        setEditData({ ...editData, eventImg: e.target.value })
+                      }
+                      placeholder="https://..."
+                    />
+                    {editData.eventImg && (
+                      <img
+                        src={editData.eventImg}
+                        alt="preview"
+                        style={{
+                          borderRadius: 8,
+                          maxHeight: 160,
+                          objectFit: "cover",
+                          width: "100%",
+                        }}
+                      />
+                    )}
+                    <div className="row-actions">
+                      <button type="submit">Save changes</button>
+                      <button
+                        type="button"
+                        className="ghost"
+                        onClick={() => setShowEditForm(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </>
             )}
 
             {user && !alreadyRsvpd && !rsvpDone && showRsvpForm && (
