@@ -62,7 +62,7 @@ export default function MyRSVPsPage() {
                 pattern="[0-9+\s\-]*"
                 value={rsvpData.phone}
                 onChange={(e) =>
-                  setRsvpData({ ...rsvpData, phone: e.target.value })
+                  setRsvpData({ ...editData, phone: e.target.value })
                 }
                 placeholder="+60 12 345 6789"
               />
