@@ -288,6 +288,8 @@ export default function EventDetailPage() {
                 />
                 <label>Contact number</label>
                 <input
+                  type="tel"
+                  pattern="[0-9+\s\-]*"
                   value={rsvpData.phone}
                   onChange={(e) =>
                     setRsvpData({ ...rsvpData, phone: e.target.value })

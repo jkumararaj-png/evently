@@ -58,10 +58,11 @@ export default function MyRSVPsPage() {
                 Contact Number
               </label>
               <input
-                name="phone"
-                value={editData.phone || ""}
+                type="tel"
+                pattern="[0-9+\s\-]*"
+                value={rsvpData.phone}
                 onChange={(e) =>
-                  setEditData({ ...editData, phone: e.target.value })
+                  setRsvpData({ ...rsvpData, phone: e.target.value })
                 }
                 placeholder="+60 12 345 6789"
               />
